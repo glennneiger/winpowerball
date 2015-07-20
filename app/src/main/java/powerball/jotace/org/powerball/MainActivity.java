@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView mainTitle = (TextView) findViewById(R.id.main_title);
         mainTitle.setTypeface(face);
+
+        //TODO: Implement the logic
     }
 
     @Override
