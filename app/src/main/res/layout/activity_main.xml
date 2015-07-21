@@ -30,6 +30,7 @@
         android:background="@drawable/yellow_ball"
         android:gravity="center"
         android:layout_width="50dp"
+            android:layout_weight="1"
         android:layout_height="50dp" />
 
         <TextView android:text="@string/no_value"
@@ -40,6 +41,7 @@
         android:background="@drawable/yellow_ball"
         android:gravity="center"
         android:layout_width="50dp"
+            android:layout_weight="1"
         android:layout_height="50dp" />
 
         <TextView android:text="@string/no_value"
@@ -50,6 +52,7 @@
             android:background="@drawable/yellow_ball"
             android:gravity="center"
             android:layout_width="50dp"
+            android:layout_weight="1"
             android:layout_height="50dp" />
 
         <TextView android:text="@string/no_value"
@@ -60,6 +63,7 @@
             android:background="@drawable/yellow_ball"
             android:gravity="center"
             android:layout_width="50dp"
+            android:layout_weight="1"
             android:layout_height="50dp" />
 
         <TextView android:text="@string/no_value"
@@ -70,6 +74,7 @@
             android:background="@drawable/yellow_ball"
             android:gravity="center"
             android:layout_width="50dp"
+            android:layout_weight="1"
             android:layout_height="50dp" />
 
         <TextView android:text="@string/no_value"
@@ -80,8 +85,32 @@
             android:background="@drawable/blue_ball"
             android:gravity="center"
             android:layout_width="50dp"
+            android:layout_weight="1"
             android:layout_height="50dp" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/play_button"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"
+        android:text="@string/button_text"
+        android:textColor="#B42626"
+        android:textSize="30sp"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:background="@drawable/button_shape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/lucky"
+        android:id="@+id/lucky" />
 
 </LinearLayout>

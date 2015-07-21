@@ -1,20 +1,33 @@
 package powerball.jotace.org.powerball;
 
 import android.graphics.Typeface;
-import android.support.v7.app.ActionBarActivity;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 public class MainActivity extends AppCompatActivity {
+
+    private AudioManager mAudioManager;
+    private SoundPool mSoundPool;
+    private int mSoundId;
+    Button mplayButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AdBuddiz.setPublisherKey("7721ad1d-de02-4d23-bcbf-7f154e19b814");
+        AdBuddiz.cacheAds(this);
 
         // Getting custom font
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/SkaterGirlsRock.ttf");
@@ -22,7 +35,43 @@ public class MainActivity extends AppCompatActivity {
         final TextView mainTitle = (TextView) findViewById(R.id.main_title);
         mainTitle.setTypeface(face);
 
-        //TODO: Implement the logic
+        final TextView ball1 = (TextView)findViewById(R.id.ball1);
+        final TextView ball2 = (TextView)findViewById(R.id.ball2);
+        final TextView ball3 = (TextView)findViewById(R.id.ball3);
+        final TextView ball4 = (TextView)findViewById(R.id.ball4);
+        final TextView ball5 = (TextView)findViewById(R.id.ball5);
+        final TextView pball = (TextView)findViewById(R.id.pball);
+
+        mplayButton = (Button) findViewById(R.id.play_button);
+        mplayButton.setTypeface(face);
+        mplayButton.setEnabled(false);
+
+        mplayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ball1.setText(BallsUtils.getWinningBall());
+                ball2.setText(BallsUtils.getWinningBall());
+                ball3.setText(BallsUtils.getWinningBall());
+                ball4.setText(BallsUtils.getWinningBall());
+                ball5.setText(BallsUtils.getWinningBall());
+                pball.setText(BallsUtils.getPowerBall());
+                BallsUtils.resetWinningNumbers();
+
+                // play the sound
+                mSoundPool.play(mSoundId, 1.0f, 1.0f, 1, 0, 1.0f);
+
+                // Display the add after 5 seconds
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        // display ad
+                        AdBuddiz.showAd(MainActivity.this);
+                    }
+                }, 5000);
+
+            }
+        });
     }
 
     @Override
@@ -45,5 +94,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        if (null == mSoundPool) {
+
+            // creating the sound pool
+            mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+            // loading the sound
+            mSoundId = mSoundPool.load(this, R.raw.cash, 1);
+
+            mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                    if (status == 0)
+                        mplayButton.setEnabled(true);
+                }
+            });
+
+        }
+
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        if (null != mSoundPool) {
+            mSoundPool.unload(mSoundId);
+            mSoundPool.release();
+            mSoundPool = null;
+        }
+        super.onPause();
     }
 }
