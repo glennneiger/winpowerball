@@ -4,15 +4,15 @@ import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
-import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,8 +26,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AdBuddiz.setPublisherKey("7721ad1d-de02-4d23-bcbf-7f154e19b814");
-        AdBuddiz.cacheAds(this);
+        // AdMob Ad
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         // Getting custom font
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/SkaterGirlsRock.ttf");
@@ -60,16 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
                 // play the sound
                 mSoundPool.play(mSoundId, 1.0f, 1.0f, 1, 0, 1.0f);
-
-                // Display the add after 5 seconds
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        // display ad
-                        AdBuddiz.showAd(MainActivity.this);
-                    }
-                }, 5000);
-
             }
         });
     }
